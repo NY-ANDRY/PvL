@@ -85,6 +85,17 @@ export default class MapBuilder {
         heading.textContent = title == ".." ? this.firstname : title;
         head.appendChild(heading);
 
+        head.setAttribute('link', this.currentPath);
+        if (this.containeIndex(this.currentPath)) {
+            head.ondblclick = () => {
+                window.location.href = head.getAttribute("link");
+            };
+        } else {
+            head.ondblclick = () => {
+                alert("can't find index");
+            };
+        }
+
         result.appendChild(head);
 
         const folderList = this.setContent();
@@ -112,18 +123,18 @@ export default class MapBuilder {
             div.setAttribute("link", this.currentPath + this.separator + this.currentData[i]);
             div.classList.add('list');
 
-            div.onclick = (event) => {
+            div.onclick = () => {
                 this.currentPath = div.getAttribute("link");
                 this.setActive(div);
                 this.update();
             };
 
             if (this.containeIndex(this.currentPath + this.separator + this.currentData[i])) {
-                div.ondblclick = (event) => {
+                div.ondblclick = () => {
                     window.location.href = div.getAttribute("link");
                 };
             } else {
-                div.ondblclick = (event) => {
+                div.ondblclick = () => {
                     alert("can't find index");
                 };
             }
