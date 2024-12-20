@@ -1,3 +1,3 @@
-make the xampp localhost directory easier to view
+make default directory path easier to view on web
 
-howto? -copy files to "htdocs" or "www" folder
+-copy files to "htdocs" or "www" folder
