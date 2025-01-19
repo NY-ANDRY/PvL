@@ -6,7 +6,7 @@ function getFolders($path)
     $folders = scandir($path);
     $nb = count($folders);
     for ($i = 0; $i < $nb; $i++) {
-        if ($folders[$i] != "." && $folders[$i] != ".." && $folders[$i] != "PrettyViewLocalhost" && is_dir($path . "/" . $folders[$i])) {
+        if ($folders[$i] != "." && $folders[$i] != ".." && $folders[$i] != "pvl" && is_dir($path . "/" . $folders[$i])) {
             $result[] = $folders[$i];
         }
     }
