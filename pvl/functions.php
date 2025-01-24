@@ -1,12 +1,12 @@
 <?php
 
-function getFolders($path)
+function getFolders($path, $protected = []) 
 {
     $result = [];
     $folders = scandir($path);
     $nb = count($folders);
     for ($i = 0; $i < $nb; $i++) {
-        if ($folders[$i] != "." && $folders[$i] != ".." && $folders[$i] != "pvl" && is_dir($path . "/" . $folders[$i])) {
+        if ($folders[$i] != "." && $folders[$i] != ".." && !in_array($folders[$i], $protected) && is_dir($path . "/" . $folders[$i])) {
             $result[] = $folders[$i];
         }
     }
@@ -28,19 +28,19 @@ function getFiles($path)
 }
 
 
-function dig($path)
+function dig($path, $bomb = [])
 {
     static $result = [];
     $result[] = $path;
 
     $currentPath = $path;
-    $currentFolders = getFolders($currentPath);
+    $currentFolders = getFolders($currentPath, $bomb);
     $nb = count($currentFolders);
     for ($i = 0; $i < $nb; $i++) {
         $currentPath = $path . "/" . $currentFolders[$i];
         $result[] = $currentPath;
         if (is_dir($currentPath)) {
-            dig($currentPath);
+            dig($currentPath,$bomb);
         }
     }
 
