@@ -2,8 +2,9 @@
 include "functions.php";
 
 $location = "..";
+$protected = ["pvl", "hide"];
 
-$tunnel = dig($location);
+$tunnel = dig($location, $protected);
 $collection = collectTunnel($tunnel);
 $result = json_encode($collection);
 
