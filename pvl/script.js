@@ -1,5 +1,5 @@
-import MapBuilder from './class/MapBuilder.js';
-import FileViewer from './class/FileViewer.js';
+import MapBuilder from './class/MapBuilder.min.js';
+import FileViewer from './class/FileViewer.min.js';
 
 const reader = new FileViewer("file-reader-space", "file-reader", "close-file-reader");
 const map = new MapBuilder("map.php", "folders", "back", "loading");
