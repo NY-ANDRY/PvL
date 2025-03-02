@@ -3,9 +3,9 @@
 @import url("uiverse.css");
 
 body {
-  font-family: "figtree";
-  background: rgb(250, 250, 250);
-  color: rgb(5, 5, 5);
+  font-family: "is";
+  background: rgb(28, 29, 30);
+  color: rgb(240, 240, 240);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -87,8 +87,8 @@ p {
   border: 1px solid rgba(0, 0, 0, 0.527);
   border-radius: 5px;
 
-  color: rgb(250, 250, 250);
-  background-color: rgb(30, 30, 30);
+  color: rgb(255, 255, 255);
+  background-color: rgb(0, 0, 0);
   animation: none !important;
   transition: all 60ms ease-out;
 }
@@ -114,6 +114,10 @@ p {
   right: 10px;
   width: 50px;
   height: 50px;
+  background-color: #050a0f;
+  border: 0;
+  color: white;
+  cursor: pointer;
 }
 
 .folder-name {
@@ -139,7 +143,7 @@ p {
   overflow-x: auto;
 
   padding: 10px;
-  background-color: rgb(255, 255, 255);
+  background-color: rgb(49, 49, 49);
   box-shadow: 1px 1px 5px rgba(0, 0, 0);
   display: none;
 
@@ -151,15 +155,19 @@ p {
 
 #close-file-reader {
   position: fixed;
+  color: rgb(220, 220, 220);
   top: 30px;
   right: 30px;
   width: 30px;
   height: 30px;
+  background-color: #050a0f;
+  border: 0;
 }
 
 .space-file-head {
   display: flex;
   align-items: center;
+  justify-content: center;
   padding-left: 360px;
 
   padding-top: 5px;

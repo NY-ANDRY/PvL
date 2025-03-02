@@ -6,6 +6,6 @@ const map = new MapBuilder("map.php", "folders", "back", "loading");
 map.addReader(reader);
 map.rename("LOCALHOST");
 map.setFileIcon("assets/file.svg");
-map.setFolderIcon("assets/folder.svg");
+map.setFolderIcon("assets/folder2.svg");
 
 map.build();
