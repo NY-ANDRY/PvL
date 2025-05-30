@@ -46,6 +46,7 @@ p {
   transition: all 60ms ease-out;
   animation: showUp 130ms ease-out;
   z-index: 100;
+  border-radius: 2px;
 }
 .list:hover {
   background-color: #eeeeee88;
@@ -102,9 +103,11 @@ p {
 }
 
 .active {
+  border-radius: 2px;
   background-color: #dddddd88;
 }
 .active:hover {
+  border-radius: 2px;
   background-color: #dddddd88;
 }
 
