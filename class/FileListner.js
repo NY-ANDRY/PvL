@@ -5,16 +5,20 @@ export default class FileListner {
         this.itemsName = className;
         this.infoSpaceId = infoSpaceId;
         this.infoSpace = document.getElementById(infoSpaceId);
+        this.listeners = new Map();
     }
 
     init() {
+        this.removeAllListeners();
+
         this.items = document.getElementsByClassName(this.itemsName);
         if (this.items.length === 0) {
             console.error("No items found with class name:", this.itemsName);
             return;
         }
+
         Array.from(this.items).forEach(element => {
-            element.addEventListener("mouseenter", async () => {
+            const mouseEnterHandler = async () => {
                 this.infoSpace.style.display = "flex";
 
                 const path = element.getAttribute("link");
@@ -56,12 +60,32 @@ export default class FileListner {
                 this.infoSpace.appendChild(lastModifiedValue);
                 this.infoSpace.appendChild(creationLabel);
                 this.infoSpace.appendChild(creationValue);
-            });
-            element.addEventListener("mouseleave", () => {
+            };
+
+            const mouseLeaveHandler = () => {
                 this.infoSpace.innerHTML = "";
                 this.infoSpace.style.display = "none";
+            };
+
+            element.addEventListener("mouseenter", mouseEnterHandler);
+            element.addEventListener("mouseleave", mouseLeaveHandler);
+
+            this.listeners.set(element, {
+                mouseenter: mouseEnterHandler,
+                mouseleave: mouseLeaveHandler
             });
         });
+    }
+
+    removeAllListeners() {
+        if (!this.listeners) return;
+
+        this.listeners.forEach((handlers, element) => {
+            element.removeEventListener("mouseenter", handlers.mouseenter);
+            element.removeEventListener("mouseleave", handlers.mouseleave);
+        });
+
+        this.listeners.clear();
     }
 
     async getInfo(path) {
@@ -69,5 +93,4 @@ export default class FileListner {
         const data = await response.json();
         return data;
     }
-
 }
