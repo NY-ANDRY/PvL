@@ -9,6 +9,9 @@ $parent = str_replace($name, '', $location);
 $parent = str_replace('../', '', $parent);
 
 $parent = "/$parent";
+if ($name === '..') {
+    $name = 'root';
+}
 
 $result = [
     'name' => $name,
