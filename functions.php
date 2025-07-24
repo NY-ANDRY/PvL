@@ -104,7 +104,7 @@ function getLastModificationDate($path) {
     }
 
     if (is_file($path)) {
-        $timestamp = filemtime($path); // date dernière modification fichier
+        $timestamp = filemtime($path);
         return date("Y-m-d H:i:s", $timestamp);
     }
 
@@ -123,7 +123,6 @@ function getLastModificationDate($path) {
         }
 
         if ($lastMod === 0) {
-            // dossier vide, on peut retourner la date du dossier lui-même
             $lastMod = filemtime($path);
         }
 
