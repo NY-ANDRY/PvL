@@ -1,0 +1,238 @@
+@import url("font.css");
+@import url("keyframe.css");
+@import url("uiverse.css");
+
+body {
+  font-family: "is";
+  background: rgb(28, 29, 30);
+  color: rgb(240, 240, 240);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+p {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #050a0f;
+}
+
+.localhost {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.list {
+  font-size: 14px;
+  position: relative;
+
+  width: 100px;
+  height: 80px;
+  min-width: fit-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  /* border: 1px solid rgba(0, 0, 0, 0.5); */
+  transition: all 60ms ease-out;
+  animation: fade 130ms ease-out;
+  z-index: 100;
+  border-radius: 2px;
+
+  cursor: pointer;
+}
+.list:hover {
+  background-color: #eeeeee88;
+}
+.output-block {
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+}
+.folder-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.output-frame {
+  max-width: 100px;
+  height: 50px;
+
+  z-index: -50;
+}
+.output-frame::-webkit-scrollbar {
+  display: none !important;
+}
+
+#folders {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.list-head {
+  font-size: 14px;
+  min-width: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(0, 0, 0, 0.527);
+  border-radius: 5px;
+
+  color: rgb(255, 255, 255);
+  background-color: rgb(0, 0, 0);
+  animation: none !important;
+  transition: all 60ms ease-out;
+}
+.list-head:hover {
+  color: rgb(255, 255, 255);
+
+  background-color: rgb(60, 60, 60);
+}
+.list-heading {
+  padding: 5px;
+}
+
+.active {
+  border-radius: 2px;
+  background-color: #dddddd88;
+}
+.active:hover {
+  border-radius: 2px;
+  background-color: #dddddd88;
+}
+
+#back {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  width: 50px;
+  height: 50px;
+  background-color: #050a0f;
+  border: 0;
+  color: white;
+  cursor: pointer;
+}
+
+.folder-name {
+  position: relative;
+  max-width: 100px;
+  max-height: 16px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  word-wrap: break-word;
+}
+
+#file-reader-space {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 800px;
+  height: 900px;
+  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: auto;
+
+  padding: 10px;
+  background-color: rgb(49, 49, 49);
+  box-shadow: 1px 1px 5px rgba(0, 0, 0);
+  display: none;
+
+  animation: fade 130ms ease-out;
+  transition: all 130ms ease-out;
+
+  z-index: 100;
+}
+
+#close-file-reader {
+  position: fixed;
+  color: rgb(220, 220, 220);
+  top: 30px;
+  right: 30px;
+  width: 30px;
+  height: 30px;
+  background-color: #050a0f;
+  border: 0;
+  cursor: pointer;
+}
+#close-file-reader:hover {
+  background-color: #050a0f88;
+  color: white;
+}
+
+.space-file-head {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 360px;
+
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-bottom: 5px;
+}
+
+.space-file-img {
+  max-width: 800px;
+  max-height: 900px;
+}
+.space-file-video {
+  max-width: 800px;
+  max-height: 900px;
+}
+
+#file-info-space {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+
+  width: 260px;
+  z-index: 200;
+
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+
+  background-color: #3d3d3d;
+  border: 0.61px solid #424242;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0);
+  border-radius: 8px;
+
+  pointer-events: none;
+
+  animation: fade 130ms ease-out;
+}
+
+#file-info-space label {
+  position: relative;
+  display: block;
+  text-wrap: break-word;
+  max-width: 100%;
+  padding: 8px 8px 2px 8px;
+  font-size: 14px;
+  color: rgb(170, 170, 170);
+}
+
+#file-info-space span {
+  position: relative;
+  display: block;
+  text-wrap: break-word;
+  max-width: 100%;
+  width: 100%;
+  padding: 0px 8px 8px 8px;
+  border-bottom: 0.6px solid rgb(26, 26, 26);
+}
