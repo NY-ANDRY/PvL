@@ -6,6 +6,8 @@ export default class FileListner {
         this.infoSpaceId = infoSpaceId;
         this.infoSpace = document.getElementById(infoSpaceId);
         this.listeners = new Map();
+        this.closeBox = false;
+        this.timeout = null;
     }
 
     init() {
@@ -19,6 +21,12 @@ export default class FileListner {
 
         Array.from(this.items).forEach(element => {
             const mouseEnterHandler = async () => {
+                if (this.timeout) {
+                    clearTimeout(this.timeout);
+                    this.timeout = null;
+                }
+                this.closeBox = false;
+
                 this.infoSpace.style.display = "flex";
 
                 const path = element.getAttribute("link");
@@ -63,8 +71,13 @@ export default class FileListner {
             };
 
             const mouseLeaveHandler = () => {
-                this.infoSpace.innerHTML = "";
-                this.infoSpace.style.display = "none";
+                this.closeBox = true;
+                this.timeout = setTimeout(() => {
+                    if (this.closeBox) {
+                        this.infoSpace.innerHTML = "";
+                        this.infoSpace.style.display = "none";
+                    }
+                }, 400);
             };
 
             element.addEventListener("mouseenter", mouseEnterHandler);
