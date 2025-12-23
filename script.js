@@ -11,6 +11,7 @@ map.addListner(fileListener);
 map.rename("LOCALHOST");
 map.setFileIcon("assets/file.svg");
 map.setFolderIcon("assets/folder2.svg");
+reader.addTxtExt("ts");
 fileListener.setPathArgsName("path");
 
 map.build();
