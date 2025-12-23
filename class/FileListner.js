@@ -8,6 +8,7 @@ export default class FileListner {
         this.listeners = new Map();
         this.closeBox = false;
         this.timeout = null;
+        this.pathArgsName = "path";
     }
 
     init() {
@@ -102,8 +103,12 @@ export default class FileListner {
     }
 
     async getInfo(path) {
-        const response = await fetch(this.filesLocation + "?path=" + path);
+        const response = await fetch(this.filesLocation + "?" + this.pathArgsName + "=" + path);
         const data = await response.json();
         return data;
+    }
+
+    setPathArgsName(pathArgsName) {
+        this.pathArgsName = pathArgsName;
     }
 }
