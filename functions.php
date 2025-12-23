@@ -1,47 +1,62 @@
 <?php
 
-function getFolders($path, $protected = []) 
+function getFolders($path, $protected = [])
 {
     $result = [];
+
+    if (!is_dir($path) || !is_readable($path))
+        return $result;
+
     $folders = scandir($path);
-    $nb = count($folders);
-    for ($i = 0; $i < $nb; $i++) {
-        if ($folders[$i] != "." && $folders[$i] != ".." && !in_array($folders[$i], $protected) && is_dir($path . "/" . $folders[$i])) {
-            $result[] = $folders[$i];
+    if ($folders === false)
+        return $result;
+
+    foreach ($folders as $folder) {
+        if ($folder === "." || $folder === "..")
+            continue;
+        $fullPath = $path . "/" . $folder;
+        if (!in_array($folder, $protected) && is_dir($fullPath) && is_readable($fullPath)) {
+            $result[] = $folder;
         }
     }
+
     return $result;
 }
 
 function getFiles($path)
 {
     $result = [];
+    if (!is_dir($path) || !is_readable($path))
+        return $result;
+
     $files = scandir($path);
-    $nb = count($files);
-    for ($i = 0; $i < $nb; $i++) {
-        $file = $path . '/' . $files[$i];
-        if (is_file($file)) {
-            $result[] = $files[$i];
+    if ($files === false)
+        return $result;
+
+    foreach ($files as $file) {
+        $fullPath = $path . '/' . $file;
+        if (is_file($fullPath) && is_readable($fullPath)) {
+            $result[] = $file;
         }
     }
+
     return $result;
 }
-
 
 function dig($path, $bomb = [])
 {
     static $result = [];
-    $result[] = $path;
 
-    $currentPath = $path;
-    $currentFolders = getFolders($currentPath, $bomb);
-    $nb = count($currentFolders);
-    for ($i = 0; $i < $nb; $i++) {
-        $currentPath = $path . "/" . $currentFolders[$i];
+    if (!is_dir($path) || !is_readable($path))
+        return $result;
+
+    $result[] = $path;
+    $currentFolders = getFolders($path, $bomb);
+
+    foreach ($currentFolders as $folder) {
+        $currentPath = $path . "/" . $folder;
         $result[] = $currentPath;
-        if (is_dir($currentPath)) {
-            dig($currentPath,$bomb);
-        }
+        dig($currentPath, $bomb);
     }
 
     return $result;
@@ -51,28 +66,33 @@ function collectTunnel($tunnel)
 {
     $result = [];
 
-    $nb = count($tunnel);
-    for ($i = 0; $i < $nb; $i++) {
-        $files = getFiles($tunnel[$i]);
-        $result[$tunnel[$i]] = $files;
+    foreach ($tunnel as $folder) {
+        $result[$folder] = getFiles($folder);
     }
 
     return $result;
 }
 
-///////
+function getSize($path)
+{
+    if (!file_exists($path) || !is_readable($path))
+        return 0;
 
-function getSize($path) {
-    if (is_file($path)) {
+    if (is_file($path))
         return filesize($path);
-    }
 
     if (is_dir($path)) {
         $totalSize = 0;
-        foreach (new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator($path, FilesystemIterator::SKIP_DOTS)
-        ) as $file) {
-            $totalSize += $file->getSize();
+        try {
+            $iterator = new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($path, FilesystemIterator::SKIP_DOTS)
+            );
+            foreach ($iterator as $file) {
+                if ($file->isReadable()) {
+                    $totalSize += $file->getSize();
+                }
+            }
+        } catch (Exception $e) {
         }
         return $totalSize;
     }
@@ -80,7 +100,8 @@ function getSize($path) {
     return 0;
 }
 
-function formatSize($bytes) {
+function formatSize($bytes)
+{
     $units = ['o', 'Ko', 'Mo', 'Go', 'To'];
     for ($i = 0; $bytes >= 1024 && $i < count($units) - 1; $i++) {
         $bytes /= 1024;
@@ -88,46 +109,37 @@ function formatSize($bytes) {
     return round($bytes, 2) . ' ' . $units[$i];
 }
 
-
-function getCreationDate($path) {
-    if (!file_exists($path)) {
+function getCreationDate($path)
+{
+    if (!file_exists($path) || !is_readable($path))
         return false;
-    }
-
-    $timestamp = filectime($path);
-    return date("Y-m-d H:i:s", $timestamp);
+    return date("Y-m-d H:i:s", filectime($path));
 }
 
-function getLastModificationDate($path) {
-    if (!file_exists($path)) {
+function getLastModificationDate($path)
+{
+    if (!file_exists($path) || !is_readable($path))
         return false;
-    }
 
-    if (is_file($path)) {
-        $timestamp = filemtime($path);
-        return date("Y-m-d H:i:s", $timestamp);
-    }
+    if (is_file($path))
+        return date("Y-m-d H:i:s", filemtime($path));
 
+    $lastMod = filemtime($path) ?: 0;
     if (is_dir($path)) {
-        $lastMod = 0;
-
-        $iterator = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator($path, FilesystemIterator::SKIP_DOTS)
-        );
-
-        foreach ($iterator as $file) {
-            $fileModTime = $file->getMTime();
-            if ($fileModTime > $lastMod) {
-                $lastMod = $fileModTime;
+        try {
+            $iterator = new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($path, FilesystemIterator::SKIP_DOTS)
+            );
+            foreach ($iterator as $file) {
+                if ($file->isReadable()) {
+                    $fileModTime = $file->getMTime();
+                    if ($fileModTime > $lastMod)
+                        $lastMod = $fileModTime;
+                }
             }
+        } catch (Exception $e) {
         }
-
-        if ($lastMod === 0) {
-            $lastMod = filemtime($path);
-        }
-
-        return date("Y-m-d H:i:s", $lastMod);
     }
 
-    return false;
+    return date("Y-m-d H:i:s", $lastMod);
 }
